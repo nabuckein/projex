@@ -1,5 +1,27 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+html{
+    background-color:red;
+    height: 100%;
+
 }
+body{
+    height: 100%;
+
+}
+.mainContainer{
+    height: 100%;
+
+}
+.titleContainer{
+    text-align: center;
+    height: 100%;
+}
+#root{
+    height:100%,
+
+}
+.mainTitle{
+    color:white;
+    font-family: 'Righteous';
+
+}
+
