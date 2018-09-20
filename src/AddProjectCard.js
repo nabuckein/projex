@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Radium from 'radium';
 import {StyleRoot} from 'radium';
 
-const firebase = require("firebase");
 
 class AddProjectCard extends Component{
 
@@ -38,12 +36,19 @@ export default AddProjectCard;
 const styles={
     AddProjectCard:{
         width:'100%',
-        
+        '@media (max-width: 430px)':{
+            display:'flex',
+            justifyContent:'space-around',
+            marginTop:16
+        }
     },
     icon:{
         fontSize:50,
         width:'100%',
-        marginBottom:10
+        marginBottom:10,
+        '@media (max-width: 430px)':{            
+            fontSize:26
+        }
     },
     iconParagraph:{
         width:'80%',
@@ -55,7 +60,12 @@ const styles={
         },
         ':active':{
             color:'white'
+        },
+        '@media (max-width: 430px)':{
+            width:'20%',
+            fontSize:8
         }
+
 
     }
 }

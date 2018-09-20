@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import Radium from 'radium';
 import {StyleRoot} from 'radium';
 import 'firebase/firestore';
-//import * as firebase from "firebase";
+import * as firebase from "firebase";
 
-const firebase = require("firebase");
 
 class Signup extends Component {
   
@@ -13,8 +11,6 @@ class Signup extends Component {
     var lastNameInput = document.getElementById('signupLastNameInput');
     var emailInput = document.getElementById('signupEmailInput');
     var passwordInput = document.getElementById('signupPasswordInput');
-    var titleSelect = document.getElementById('signupTitleSelect');
-    //var userIdInput = document.getElementById('signupUserIDInput');
     var displayName = firstNameInput.value + " " + lastNameInput.value;
     var usersData = {
       firstName:firstNameInput.value,
@@ -26,12 +22,12 @@ class Signup extends Component {
       settings:{
         projectPriority:false
       }
-
        //This will only be created in the database side, not on the Authentication side of Firebase
       //userID:userIdInput.value,
       //userTitle:titleSelect.value
     }
-    var db = firebase.firestore();
+    
+    var db = firebase.firestore();    
     firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
     .then(function(user){
       user.updateProfile({
@@ -39,12 +35,12 @@ class Signup extends Component {
         lastName:lastNameInput.value,
         fullName:displayName,
         displayName: displayName
-      });
+      });      
       db.collection('users').doc(displayName).set(usersData);
-      
+      db.collection('notes').doc(displayName).set({'0000A':"init"});
+      db.collection('archivedNotes').doc(displayName).set({'0000A':"init"});
     },function(error){
      // Handle Errors here.
-     var errorCode = error.code;
      var errorMessage = error.message;
      var errorText = document.getElementById("errorMessageText");
      console.log("%c" + errorMessage, "background-color: red");      
@@ -159,7 +155,7 @@ const styles = {
     marginTop:80
   },
   errorMessage:{
-      color:'red',
+      color:'transparent',
       fontFamily:'Fjalla One',
       marginTop:50,
       marginBottom:30

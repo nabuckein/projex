@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Radium from 'radium';
 import {StyleRoot} from 'radium';
 
-const firebase = require("firebase");
-
 class Loading extends Component{
 
 	render(){
@@ -40,13 +38,16 @@ var styles={
         
         marginLeft:'auto',
         marginRight:'auto',
-        border:'10px solid white',
+        borderStyle:'solid',
+        borderColor:'white',
+        borderWidth:'10px',
         height:100,
         width:100,
         borderRadius:'50%',
         borderTopColor:'gray',
         borderBottomColor:'white',
-        animation: '1s infinite',
+        animationDuration: '1s',        
+        animationIterationCount:'infinite',
         animationName:spin
     }
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Radium from 'radium';
 import {StyleRoot} from 'radium';
 
 class Login extends Component {
@@ -11,7 +10,6 @@ class Login extends Component {
    // var userID = document.getElementById("loginUserIDInput").value;
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
   // Handle Errors here.
-      var errorCode = error.code;
       var errorMessage = error.message;
       var errorText = document.getElementById("errorMessageText");
       // ...
@@ -21,7 +19,7 @@ class Login extends Component {
   }
   handleInputsClick=(e)=>{
     var errorText = document.getElementById("errorMessageText");
-    errorText.style.color = 'red';
+    errorText.style.color = 'transparent';
   }
 
   render() {
@@ -137,7 +135,7 @@ const styles = {
     
   },
   errorMessage:{
-      color:'red',
+      color:'transparent',
       fontFamily:'Fjalla One',
       marginBottom:100
     }

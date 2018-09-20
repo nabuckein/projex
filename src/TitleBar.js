@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Radium from 'radium';
 import {StyleRoot} from 'radium';
 
 const firebase = require("firebase");
@@ -22,7 +21,7 @@ class TitleBar extends Component{
 	render(){
 		return(
 			<StyleRoot>
-                <div style={styles.titleBarContainer}>
+                <div className="titleBarContainer" style={styles.titleBarContainer}>
                     <div style={styles.titleBarDiv}>
                         <h1 style={styles.mainTitle}>Projex</h1>
                         <p style={styles.titleBarButtons}>{this.props.currentUser.displayName}</p>
@@ -39,9 +38,8 @@ export default TitleBar;
 
 const styles={
     titleBarContainer:{
-        
         width:'100%',
-        
+        height:100
     },
     titleBarDiv:{
         width:'100%',
@@ -50,13 +48,22 @@ const styles={
         display:'flex',
         flexWrap:'wrap',
         alignItems:'baseline',
-        justifyContent:'center'
+        justifyContent:'center',
+        '@media (max-width: 430px)': {
+            justifyContent:'center',
+        }
+        
     },
     mainTitle:{
         color:'white',
         fontFamily: 'Righteous',
         width:'50%',
-        margin:0
+        margin:0,
+        '@media (max-width: 430px)': {
+            width:'40%',
+            fontSize:24,
+            textAlign:'left'
+        }
     },
     titleBarButtons:{
         color:'white',
@@ -64,7 +71,11 @@ const styles={
         width:'30%',
         marginLeft:'2%',
         marginRight:'2%',
-        textAlign:'right'
+        textAlign:'right',
+        '@media (max-width: 430px)': {
+            fontSize:10,
+            width:'25%',
+        }
     },
     sideBarButtons:{
         width:'5%',
@@ -89,6 +100,15 @@ const styles={
           border:'solid red 1px',
           backgroundColor:'black',
           color:'white'
-        }      
+        },    
+        '@media (max-width: 430px)': {
+            fontSize:10,
+            height:20,
+            width:40,
+            borderRadius:1,
+            marginLeft:0,
+            marginRight:2,
+            
+        }
       }
 }

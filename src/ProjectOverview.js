@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Radium from 'radium';
 import {StyleRoot} from 'radium';
 
-const firebase = require("firebase");
 
 class ProjectOverview extends Component{
     constructor(props){
