@@ -2,19 +2,35 @@
   "name": "projex",
   "version": "0.1.0",
   "private": true,
-  "devDependencies": {
-    "react-scripts": "1.1.4"
-  },
   "dependencies": {
-    "firebase": "^4.13.1",
-    "radium": "^0.24.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "firebase": "^5.5.0",
+    "firebase-admin": "^6.0.0",
+    "radium": "^0.25.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "2.0.0-next.a671462c"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
   }
 }
