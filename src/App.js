@@ -3,9 +3,14 @@ import {StyleRoot} from 'radium';
 import TitleBar from './TitleBar.js';
 import ProjectCard from './ProjectCard.js';
 import Login from './Login.js';
+import Shop from './Shop.js';
 import Signup from './Signup.js';
 import LoginOrSignup from './LoginOrSignup.js'
 import AddProjectCard from './AddProjectCard.js';
+import NewRedline from './NewRedline.js';
+import QuickUpdate from './QuickUpdate.js';
+import DesignCheck from './DesignCheck.js';
+import ReturnPart from './ReturnPart.js';
 import NewProjectCardInfo from './NewProjectCardInfo.js';
 import NewProjectNote from './NewProjectNote.js';
 import ProjectsTabs from './ProjectsTabs.js';
@@ -13,6 +18,7 @@ import ProjectOverview from './ProjectOverview.js';
 import Loading from './Loading.js';
 import Settings from './Settings.js';
 import * as firebase from "firebase";
+
 
 var config = {
   apiKey: "AIzaSyBXMeHoR1iDD4akXK_k5NzAFhqU9p-Wd7Q",
@@ -51,26 +57,8 @@ class App extends Component {
     this.projectsTabs=[];
   }
 
-  componentWillMount=(e)=>{
-    fetch('./Users/sanchem49/Desktop/voicemail.-VPN.txt')
-    .then(
-      function(response) {
-        if (response.status !== 200) {
-          console.log('Looks like there was a problem. Status Code: ' +
-            response.status);
-          return;
-        }
-        //console.log("Something happened", response.json());
-        // Examine the text in the response
-        response.text().then(function(data) {
-          console.log(data);
-        });
-      }
-    )
-    .catch(function(err) {
-      console.log('Fetch Error :-S', err);
-    });
-
+  UNSAFE_componentWillMount=(e)=>{
+    
     this.firebaseUserSignedInFunction();
     this.getCurrentNotesForCurrentUser();
   }
@@ -162,7 +150,9 @@ class App extends Component {
   handleCancelLoginClick=(e)=>{
     this.setState({componentToDisplay:"LoginOrSignup"});
   }
-  
+  handleBackFromShop=(e)=>{
+    this.setState({componentToDisplay:"LoginOrSignup"});
+  }
   handleCancelSignupClick=(e)=>{
     this.setState({componentToDisplay:"LoginOrSignup"});
   }
@@ -178,7 +168,18 @@ class App extends Component {
   handleBackFromNewProjectNote=(e)=>{
     this.setState({componentToDisplay:"Projects"});    
   }
-  
+  handleBackFromNewRedline=(e)=>{
+    this.setState({componentToDisplay:"Projects"});    
+  }
+  handleBackFromQuickUpdate=(e)=>{
+    this.setState({componentToDisplay:"Shop"});    
+  }
+  handleBackFromDesignCheck=(e)=>{
+    this.setState({componentToDisplay:"Shop"}); 
+  }
+  handleBackFromReturnPart=(e)=>{
+    this.setState({componentToDisplay:"Shop"});
+  }
   toNewNote=(e)=>{
     if(typeof e!== 'undefined'){
       this.setState({componentToDisplay:"NewNote", projectOverviewTitle:e.currentTarget.className});
@@ -256,17 +257,36 @@ class App extends Component {
     console.log(e.currentTarget.id);
     this.setState({componentToDisplay:"ProjectOverview", projectOverviewTitle:e.currentTarget.className});
   }
+  toRedlines=(e)=>{   
+    console.log(e.currentTarget.id);
+    this.setState({componentToDisplay:"NewRedline", projectOverviewTitle:e.currentTarget.className});
+  }
+  toQuickUpdate=(e)=>{   
+    this.setState({componentToDisplay:"QuickUpdate"});
+  }
+  toDesignCheck=(e)=>{   
+    this.setState({componentToDisplay:"DesignCheck"});
+  }
+  toReturnPart=(e)=>{
+    this.setState({componentToDisplay:"ReturnPart"});
+  }
   toSettings=(e)=>{
     this.setState({componentToDisplay:"Settings"});
   }
   toLogin=(e)=>{
     this.setState({componentToDisplay:"Login"});
   }
+  toShop=(e)=>{
+    this.setState({componentToDisplay:"Shop"});
+  }
   toSignup=(e)=>{
     this.setState({componentToDisplay:"Signup"});
   }
   toNewProjectCardInfo=(e)=>{
     this.setState({componentToDisplay:"NewProject"});
+  }
+  toNewRedline=(e)=>{
+    this.setState({componentToDisplay:"NewRedline", projectOverviewTitle:''});
   }
   handleProjectCardClick=(e)=>{
     //console.log(e.target.id);
@@ -278,7 +298,6 @@ class App extends Component {
   }
   
   render() {
-    
     if(this.state.componentToDisplay==="Signup" && this.state.currentUser===null){
       document.removeEventListener('keydown', this.aPressed);
       return (
@@ -290,12 +309,22 @@ class App extends Component {
     else if(this.state.componentToDisplay==="Settings"){
       return(
         <div className="App" style={styles.App}>
-          <div style={styles.titleBar}>
+          <div className="titleBar" style={styles.titleBar}>
             <TitleBar currentUser={this.state.currentUser} toSettings={this.toSettings}/>
           </div>
           
           <Settings projects={this.state.projects} handleBackFromSettings={this.handleBackFromSettings} userDisplayName={this.state.currentUser.displayName}/>
         </div>
+          )
+    } 
+    else if(this.state.componentToDisplay==="NewRedline"){
+      return(
+        <div className="App" style={styles.App}>
+          <div className="titleBar" style={styles.titleBar}>
+            <TitleBar currentUser={this.state.currentUser} toSettings={this.toSettings}/>
+          </div>
+            <NewRedline handleBackFromNewRedline={this.handleBackFromNewRedline} userDisplayName={this.state.currentUser.displayName} clickedProjectNumber={this.state.projectOverviewTitle} />
+         </div>
           )
     }   
     else if(this.state.componentToDisplay==="Login" && this.state.currentUser===null){
@@ -305,6 +334,34 @@ class App extends Component {
           <Login handleCancelLoginClick={this.handleCancelLoginClick}/>
         </div>
       );
+    }
+    else if(this.state.componentToDisplay==="Shop"){      
+      return(
+        <div className="App" style={styles.App}>
+          <Shop handleBackFromShop={this.handleBackFromShop} toQuickUpdate={this.toQuickUpdate} toDesignCheck={this.toDesignCheck} toReturnPart={this.toReturnPart} />
+        </div>
+      )
+    }
+    else if(this.state.componentToDisplay==="QuickUpdate"){
+      return(
+        <div className="App" style={styles.App}>
+          <QuickUpdate handleBackFromQuickUpdate={this.handleBackFromQuickUpdate}/>
+        </div>
+      )
+    }
+    else if(this.state.componentToDisplay==="DesignCheck"){
+      return(
+        <div className="App" style={styles.App}>
+          <DesignCheck handleBackFromDesignCheck={this.handleBackFromDesignCheck}/>
+        </div>
+      )
+    }
+    else if(this.state.componentToDisplay==="ReturnPart"){
+      return(
+        <div className="App" style={styles.App}>
+          <ReturnPart handleBackFromReturnPart={this.handleBackFromReturnPart}/>
+        </div>
+      )
     }
     else if(this.state.componentToDisplay==="Projects" && this.state.currentUser!==null){
       /*if(this.state.shortcutListener){
@@ -320,7 +377,7 @@ class App extends Component {
           //ONLY DISPLAY PROJECTS THAT CONTAIN THE CURRENT USER
           if(this.state.projects[n].projectUsers.includes(this.state.currentUser.displayName)){
             count++;
-            this.projects.push(<div key={"projectCardDivKey" + n} style={styles.projectCard}><ProjectCard shortcutListenerOn={this.shortcutListenerOn} shortcutListener={this.shortcutListener} key={"projectCard" + n} toNewNote={this.toNewNote} toProjectOverview={this.toProjectOverview} getCurrentProjectsInFirebase={this.getCurrentProjectsInFirebase} currentUserDisplayName={this.state.currentUser.displayName} projects={this.state.projects} projectPriorityShortcut={projectPriorityShortcut} getCurrentNotesForCurrentUser={this.getCurrentNotesForCurrentUser} notes={this.state.currentNotesForCurrentUser} title={this.state.projects[n].projectName} plant={this.state.projects[n].projectPlant} number={this.state.projects[n].projectNumber}/></div>);
+            this.projects.push(<div key={"projectCardDivKey" + n} style={styles.projectCard}><ProjectCard shortcutListenerOn={this.shortcutListenerOn} shortcutListener={this.shortcutListener} key={"projectCard" + n} toNewNote={this.toNewNote} toProjectOverview={this.toProjectOverview} toRedlines={this.toRedlines} getCurrentProjectsInFirebase={this.getCurrentProjectsInFirebase} currentUserDisplayName={this.state.currentUser.displayName} projects={this.state.projects} projectPriorityShortcut={projectPriorityShortcut} getCurrentNotesForCurrentUser={this.getCurrentNotesForCurrentUser} notes={this.state.currentNotesForCurrentUser} title={this.state.projects[n].projectName} plant={this.state.projects[n].projectPlant} number={this.state.projects[n].projectNumber}/></div>);
             this.projectsTabs.push(<div key={"projectsTabsDivKey" + n} style={styles.projectsTabs}><ProjectsTabs key={"projectTab" + n} title={this.state.projects[n].projectName} plant={this.state.projects[n].projectPlant} number={this.state.projects[n].projectNumber}/></div>);
           }
         }
@@ -330,7 +387,7 @@ class App extends Component {
         return (
           <StyleRoot>
             <div className="App" style={styles.App}>
-              <div style={styles.titleBar}>
+              <div className="titleBar" style={styles.titleBar}>
                 <TitleBar currentUser={this.state.currentUser} toSettings={this.toSettings}/>
               </div>
               {
@@ -338,10 +395,10 @@ class App extends Component {
                 {this.projectsTabs}
               </div>*/
               }
-              <div style={styles.addProjectCardDiv}>
-                <AddProjectCard toNewProjectCardInfo={this.toNewProjectCardInfo} addProjectVisibility={true} addReminderVisibility={true} addNoteTodoVisibility={true}/>
+              <div className="addProjectCardDiv" style={styles.addProjectCardDiv}>
+                <AddProjectCard toNewRedline={this.toNewRedline} toNewProjectCardInfo={this.toNewProjectCardInfo} addProjectVisibility={true} addReminderVisibility={true} addNoteTodoVisibility={true}/>
               </div>
-              <div style={styles.projectCardDiv}>
+              <div className="projectCardDiv" style={styles.projectCardDiv}>
                 {this.projects}
               </div>
               {/*<div style={styles.remindersDiv}>
@@ -356,15 +413,15 @@ class App extends Component {
         return(
           <StyleRoot>
             <div className="App" style={styles.App}>
-              <div style={styles.titleBar}>
+              <div className="titleBar" style={styles.titleBar}>
                 <TitleBar currentUser={this.state.currentUser} toSettings={this.toSettings}/>
               </div>
               
               {/*<div style={styles.remindersDiv}>
                 <Reminders/>
               </div>*/}
-              <div style={styles.addProjectCardDiv}>
-                <AddProjectCard toNewProjectCardInfo={this.toNewProjectCardInfo} addProjectVisibility={true} addReminderVisibility={true} addNoteTodoVisibility={false}/>
+              <div className="addProjectCardDiv" style={styles.addProjectCardDiv}>
+                <AddProjectCard toNewRedline={this.toNewRedline} toNewProjectCardInfo={this.toNewProjectCardInfo} addProjectVisibility={true} addReminderVisibility={true} addNoteTodoVisibility={false}/>
               </div>
             </div>
           </StyleRoot>
@@ -377,22 +434,22 @@ class App extends Component {
         <StyleRoot>
           <div className="App" style={styles.ProjectOverviewState}>
 
-            <div style={styles.titleBar}>
+            <div className="titleBar" style={styles.titleBar}>
               <TitleBar currentUser={this.state.currentUser}/>
             </div >
 
-            <div style={styles.projectOverviewTitleDiv}>
-              <p style={styles.projectOverviewTitle}>{this.state.projectOverviewTitle}</p>
+            <div className="projectOverviewTitleDiv" style={styles.projectOverviewTitleDiv}>
+              <p className="projectOverviewTitle" style={styles.projectOverviewTitle}>{this.state.projectOverviewTitle}</p>
             </div>
 
-            <div style={styles.projectOverviewDiv}>   
+            <div className="projectOverviewDiv" style={styles.projectOverviewDiv}>  
 
-              <div style={styles.projectOverview}>
+              <div className="projectOverview" style={styles.projectOverview}>
                 <ProjectOverview title={this.state.projectOverviewTitle} backToProjects={this.handleBackFromProjectOverviewClick}/>
               </div>
 
-              <div style={styles.addProjectCardDiv}>
-                <AddProjectCard addNewNoteTodo={this.addNewNoteTodo} addProjectVisibility={false} addReminderVisibility={false} addNoteTodoVisibility={true}/>
+              <div className="addProjectCardDiv" style={styles.addProjectCardDiv}>
+                <AddProjectCard toNewRedline={this.toNewRedline} addNewNoteTodo={this.addNewNoteTodo} addProjectVisibility={false} addReminderVisibility={false} addNoteTodoVisibility={true}/>
               </div>
 
             </div>
@@ -412,7 +469,7 @@ class App extends Component {
     
     else if(this.state.componentToDisplay==="LoginOrSignup" && this.state.currentUser===null){
       document.removeEventListener('keydown', this.aPressed);
-        return <LoginOrSignup toLogin={this.toLogin} toSignup={this.toSignup}/>
+        return <LoginOrSignup toLogin={this.toLogin} toSignup={this.toSignup} toShop={this.toShop}/>
       }
     else if(this.state.componentToDisplay==="LoginOrSignup" && this.state.currentUser!==null){
       document.removeEventListener('keydown', this.aPressed);
@@ -446,24 +503,22 @@ const styles={
   },
   titleBar:{
     backgroundColor:'black',
-    width:'100%',
-    height:'80px',
-    margin:0,    
+    width:'100%',    
+    margin:'0 0 0 0',    
     paddingTop:0,
     paddingBottom:0,
-    paddingRight:0,
-    paddingLeft:'5%',
+    paddingRight:0,    
     borderBottom:'solid white 1px',
+    position:'fixed',
     
   },
   projectsTabsDiv:{
     width:'15%',
-    marginTop:20,
+    margin:'20px 0 0 0',
     display:'flex',
     justifyContent:'flex-start',
     flexWrap:'wrap',
-    flexDirection:'column',
-    
+    flexDirection:'column',    
   },
   projectsTabs:{
     width:'90%',
@@ -472,28 +527,27 @@ const styles={
 
   },
   projectCardDiv:{
-    width:'65%',
+    width:'60%',
     height:'100%',
     display:'flex',
     flexWrap:'wrap',
     justifyContent:'flex-start',
-    marginTop:50,
+    margin:'100px 0 0 0',
     '@media (max-width: 430px)': {        
       width:'90%',
-      margin:'0 auto 0 auto',
-      justifyContent:'center',
-    }
+      margin:'160px auto 0 auto',
+      justifyContent:'center',      
+    },
   },
   projectCard:{
     width:'45%',
-    heigth:'100%',
-    marginLeft:10,
-    marginRight:10,
-    marginTop:20,
+    heigth:'100%',    
+    margin:'20px 10px 0 10px',
     '@media (max-width: 430px)': {        
       width:'100%',
-      margin:'20 auto 0 auto',
-      justifyContent:'center',
+      margin:'60px auto 0 auto',
+      justifyContent:'center',      
+      overflow:'hidden'
     }
   },
   projectOverviewTitleDiv:{
@@ -529,11 +583,17 @@ const styles={
     marginTop:50
   },
   addProjectCardDiv:{
+    background:'indigo',
     width:'10%',
-    marginTop:50,
+    marginTop:200,
+    position:'fixed',
+    left:10,
+    top:0,
     '@media (max-width: 430px)': {        
       width:'100%',
-      margin:0
+      marginTop:10,
+      left:0,
+      top:41
     }
   },
   sidebarDiv:{

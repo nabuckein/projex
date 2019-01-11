@@ -24,18 +24,12 @@ class DeleteUser extends Component{
         //-----------------------------------------------
     }
     handleConfirmClick=(e)=>{
-        //THESE NEXT LINES WILL DELETE THE USER SELECTED FROM FIREBASE'S DATABASE, NOT THE FIREBASE AUTHENTICATE DATABASE
-        var FieldValue = require('firebase-admin').firestore.FieldValue;
-        var projIDArr = this.props.projectsID;
-        
-        //GET THE PROJECTS WHERE THE SELECTED USER IS INCLUDED IN
         var user = document.getElementById('select').value;
         var db=firebase.firestore();       
         var userSelectedProjects = [];
         var allUsersInTheProjects = [];
         var projArr = this.state.projects;
         projArr.forEach(proj=>{
-            console.log(proj);
             //proj.get().then(x=>{
                 if(proj.projectUsers.includes(user)){
                     allUsersInTheProjects.push(proj.projectUsers); //PUSH THE PROJECT USERS TO THIS ARRAY IN ORDER TO LATER ON FILTER OUT THE
@@ -45,7 +39,6 @@ class DeleteUser extends Component{
                     var batch = db.batch();
                     var projRef=db.collection('projects').doc(proj.projectNumber);
                     var filteredProjectUsers = proj.projectUsers.filter(x=>x!=user);
-                    console.log(filteredProjectUsers);
                     batch.update(projRef,{projectUsers:filteredProjectUsers});
                     return batch.commit().then(function () {
                         // ...

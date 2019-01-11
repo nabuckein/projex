@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {StyleRoot} from 'radium';
 
 const firebase = require("firebase");
@@ -16,6 +17,7 @@ class TitleBar extends Component{
           console.log("%cERROR WHILE TRYING TO LOG OUT", "background-color:red; color:white");
         });
       }
+
     
 
 	render(){
@@ -39,18 +41,23 @@ export default TitleBar;
 const styles={
     titleBarContainer:{
         width:'100%',
-        height:100
+        height:60,
+        '@media (max-width: 430px)': {
+            height:40,
+            
+        }
     },
     titleBarDiv:{
         width:'100%',
         textAlign:'center',
-        marginTop:20,
+        marginTop:10,
         display:'flex',
         flexWrap:'wrap',
         alignItems:'baseline',
         justifyContent:'center',
         '@media (max-width: 430px)': {
             justifyContent:'center',
+            
         }
         
     },
@@ -61,7 +68,7 @@ const styles={
         margin:0,
         '@media (max-width: 430px)': {
             width:'40%',
-            fontSize:24,
+            fontSize:20,
             textAlign:'left'
         }
     },

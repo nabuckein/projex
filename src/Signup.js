@@ -28,16 +28,19 @@ class Signup extends Component {
     }
     
     var db = firebase.firestore();    
+    
     firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
     .then(function(user){
-      user.updateProfile({
+      var dbUser = firebase.auth().currentUser;
+      dbUser.updateProfile({
         firstName:firstNameInput.value,
         lastName:lastNameInput.value,
         fullName:displayName,
         displayName: displayName
-      });      
+      });   
       db.collection('users').doc(displayName).set(usersData);
       db.collection('notes').doc(displayName).set({'0000A':"init"});
+      db.collection('redlines').doc(displayName).set({'0000A':"init"});
       db.collection('archivedNotes').doc(displayName).set({'0000A':"init"});
     },function(error){
      // Handle Errors here.

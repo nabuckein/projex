@@ -17,7 +17,7 @@ class ProjectCard extends Component {
 
   }
   
-  deleteCurrentProjectUserFromFirebase=(e)=>{    
+  deleteCurrentProjectFromFirebase=(e)=>{    
     document.getElementById("ProjectCardTrash_" + this.props.title).className = "animated bounceOut 1s";
     var db=firebase.firestore();
     //var currentProjectsArr = this.props.projects;
@@ -132,7 +132,7 @@ class ProjectCard extends Component {
     var db = firebase.firestore();
     var projRef = db.collection('notes').doc(this.props.currentUserDisplayName);
     var bindedThis = this;
-    bindedThis.currentNotes=[];
+    bindedThis.currentNotes=[];   
     db.runTransaction(t=>{
       return t.get(projRef).then(doc=>{
         if(doc.data()[this.props.number]!==undefined){
@@ -184,11 +184,6 @@ class ProjectCard extends Component {
           </div>)
         }
       }
-        
-      
-    
-  
-    
     //--------------INPUT TO ENTER NEW NOTE-------------------------  
     var addNoteInput=[];
       addNoteInput.push(<div style={styles.projectAddNoteInputDiv} key="projectAddNoteInputKey" id={"projectAddNoteInputDiv" + this.props.number}>
@@ -215,9 +210,10 @@ class ProjectCard extends Component {
               {addNoteInput}
           </div>
           <div style={styles.projectCardIconsDiv} key="iconProjectCardDiv1">
-            <p className={this.props.number} style={styles.iconTrashParagraph} key="iconProjectCardParagraph1" onClick={this.deleteCurrentProjectUserFromFirebase}><i className="fas fa-trash" style={styles.icon} key="iconProjectCardI1" ></i></p>
+            <p className={this.props.number} style={styles.iconTrashParagraph} key="iconProjectCardParagraph1" onClick={this.deleteCurrentProjectFromFirebase}><i className="fas fa-trash" style={styles.icon} key="iconProjectCardI1" ></i></p>
             <p className={this.props.number} style={styles.iconAddnoteParagraph} key="iconProjectCardParagraph2" onClick={this.showAddNoteInput/*props.toNewNote*/}><i className="fas fa-sticky-note" style={styles.icon} key="iconProjectCardI2" ></i></p>
             <p className={this.props.number} style={styles.iconMaximizeProjectParagraph} key="iconProjectCardParagraph3" onClick={this.props.toProjectOverview}><i className="fas fa-expand-arrows-alt" style={styles.icon} key="iconProjectCardI3" ></i></p>
+            <p className={this.props.number} style={styles.iconRedline} key="iconProjectCardParagraph4" onClick={this.props.toRedlines}><i className="fas fa-check-square" style={styles.icon} key="iconProjectCardI4" ></i></p>
           </div>
         </div>
         </StyleRoot>
@@ -232,17 +228,17 @@ const styles = {
     ProjectCard:{
       backgroundColor:'gray',
       width:'100%',
+      height:'100%',
       marginLeft:'auto',
-      marginRight:'auto',
-      
+      marginRight:'auto',      
       borderRadius:10,
       border:'solid transparent 4px',
       ':hover':{
         border:'solid white 4px'
       },
       '@media (max-width: 430px)': {        
-        width:'100%',
-        height:'80%'
+        width:'96%',
+        height:'80%',
       }
     },
     projectShortcutNumber:{
@@ -328,7 +324,11 @@ const styles = {
       alignItems:'baseline',
       justifyContent:'center',
       width:'100%',
-      height:20
+      height:20,
+      '@media (max-width: 430px)': {             
+        width:'98%',
+        margin:'0 auto 0 auto'
+      }
     },
     projectCardListItemsDivEmpty:{
       display:'flex',
@@ -342,7 +342,7 @@ const styles = {
       height:250,
       overflow: 'hidden',
       '@media (max-width: 430px)': {        
-        height:100,
+        height:110,
       }
     },
     projectCardList:{
@@ -353,9 +353,7 @@ const styles = {
       overflowY: 'auto',
       overflowX: 'hidden',
       boxSizing:'content-box',
-      '@media (max-width: 430px)': {        
-        
-      }
+      
     },
     projectCardListItem:{
       color:'white',
@@ -390,17 +388,21 @@ const styles = {
       minWidth:'15%',
       backgroundColor:'darkred',
       color:'white',
-      border:'none',
+      borderTop:'none',
+      borderBottom:'none',
+      borderRight:'none',
+      borderLeft:'none',
       borderRadius:3,      
       marginRight:5,
       ':hover':{
         backgroundColor:'red'
       },
       '@media (max-width: 430px)': {        
-        minWidth:'2%',
+        minWidth:50,
         fontSize:8,
-        marginLeft:2,
-        marginRight:2,
+        marginRight:0,
+        borderRadius:1, 
+        
       }
     },
     projectCardListItemDoneButton:{
@@ -416,18 +418,19 @@ const styles = {
         backgroundColor:'limegreen'
       },
       '@media (max-width: 430px)': {        
-        minWidth:'2%',
+        minWidth:50,
         fontSize:8,
-        marginLeft:2,
-        marginRight:2
+        marginRight:0,
+        borderRadius:1, 
       }
     },
     projectCardIconsDiv:{
       display:'flex',
       justifyContent:'center',
-      height:60,
+      height:80,
       '@media (max-width: 430px)': {             
         marginTop:50,
+        height:60,
       }
     },
     icon:{
@@ -486,7 +489,24 @@ const styles = {
             color:'white'
         }
 
-    }
+    },
+    iconRedline:{
+      fontSize:20,
+      boxSizing: 'border-box',
+      
+      marginLeft:15,
+      marginRight:15,
+      fontFamily:"Gugi",
+      color:'white',
+      ':hover':{
+          fontSize:24,
+          color:'red'
+      },
+      ':active':{
+          color:'white'
+      }
+
+  }
     
 
 }

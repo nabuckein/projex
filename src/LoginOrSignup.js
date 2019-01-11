@@ -14,6 +14,7 @@ class LoginOrSignup extends Component{
                         <h3 style={styles.title2}>PROCESS AUTOMATION</h3>
                     </div>
                     <div style={styles.buttonsDiv}>
+                        <button key="shopbutton" style={styles.buttons} onClick={this.props.toShop}>SHOP</button>
                         <button key="loginbutton" style={styles.buttons} onClick={this.props.toLogin}>LOG IN</button>
                         <button key="signupbutton" style={styles.buttons} onClick={this.props.toSignup}>SIGN UP</button>
                     </div>
@@ -67,14 +68,19 @@ const styles={
     },
     buttons:{
         fontFamily:'Pathway Gothic One',        
-        color:'white',
-        backgroundColor:'purple',
+        color:'black',
+        height:44,
+        width:100,
+        backgroundColor:'darkgrey',
         fontSize:30,
-        border:'none',
+        borderStyle:'none',
+        borderRadius:5,
         marginLeft:10,
         marginRight:10,
         ':hover':{
-            backgroundColor:'darkblue'
+            backgroundColor:'black',
+            color:'white',
+            
         },
         ':active':{
             backgroundColor:'white',
